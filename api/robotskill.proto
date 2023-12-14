@@ -1,0 +1,43 @@
+syntax = "proto3";
+import "api/common/common.proto";
+package robotmind;
+
+service RobotSkillService {
+
+    rpc EnableSkill (EnableSkillRequest) returns (EnableSkillResponse) {
+    }
+
+    rpc HandleAction (ActionRequest) returns (ActionResponse) {
+    }
+}
+
+// 技能请求
+message EnableSkillRequest {
+    common.CommonReqInfo common_req_info = 1;
+    bool ability = 2; // true to subscribe, false unsubscribe
+    string param = 3;
+    string sub_addr = 4; // subscriber gRPC address
+    string sub_name = 5; //subscriber name, the same subscriber should use fixed name
+    string extra_type = 6; // optional, use for sub suffix,max length no more than 64, align to common.Extra.extra_type.
+}
+
+// 技能响应
+message EnableSkillResponse {
+    common.CommonRspInfo common_resp_info = 1;
+    string result = 2;
+}
+
+message ActionRequest {
+    common.CommonReqInfo common_req_info = 1;
+    // 消息类型
+    string id = 2;
+    // 消息相关数据
+    string param = 3;
+    // 技能上下文
+    string context = 4;
+}
+
+message ActionResponse {
+    common.CommonRspInfo common_resp_info = 1;
+    string data = 2;
+}
