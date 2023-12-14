@@ -21,7 +21,7 @@ locust --headless --html reports/cross202309242230.html
 
 locust --master --headless --expect-workers=2 --html reports/cross202309242336.html
 locust --worker --master-host=10.12.32.121
-locust --worker --master-host=10.12.32.121
+locust --worker --master-host=10.12.32.121`
 
 ## 三实例测试
 预计user数可达到1500个，最大2000个

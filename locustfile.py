@@ -46,7 +46,7 @@ class TimeStageShape(LoadTestShape):
         users -- 用户数
         spawn_rate -- 每秒要启动/停止的用户数
     """
-    stages = [
+    stages_0 = [
         {"duration": 600, "users": 300, "spawn_rate": 10},
         {"duration": 1200, "users": 400, "spawn_rate": 10},
         {"duration": 1800, "users": 500, "spawn_rate": 10},
@@ -110,17 +110,17 @@ class TimeStageShape(LoadTestShape):
         {"duration": 27000, "users": 1500, "spawn_rate": 10},
         {"duration": 28800, "users": 1600, "spawn_rate": 10}
     ]
-    stages_0 = [
-        {"duration": 1800, "users": 50, "spawn_rate": 5},
-        {"duration": 3600, "users": 100, "spawn_rate": 5},
-        {"duration": 5400, "users": 150, "spawn_rate": 5},
-        {"duration": 7200, "users": 200, "spawn_rate": 5},
-        {"duration": 9000, "users": 250, "spawn_rate": 5},
-        {"duration": 10800, "users": 300, "spawn_rate": 5},
-        {"duration": 12600, "users": 350, "spawn_rate": 5},
-        {"duration": 14400, "users": 400, "spawn_rate": 5},
-        {"duration": 16200, "users": 450, "spawn_rate": 5},
-        {"duration": 18000, "users": 500, "spawn_rate": 5}
+    stages = [
+        {"duration": 10, "users": 1, "spawn_rate": 1}
+        # {"duration": 3600, "users": 100, "spawn_rate": 5},
+        # {"duration": 5400, "users": 150, "spawn_rate": 5},
+        # {"duration": 7200, "users": 200, "spawn_rate": 5},
+        # {"duration": 9000, "users": 250, "spawn_rate": 5},
+        # {"duration": 10800, "users": 300, "spawn_rate": 5},
+        # {"duration": 12600, "users": 350, "spawn_rate": 5},
+        # {"duration": 14400, "users": 400, "spawn_rate": 5},
+        # {"duration": 16200, "users": 450, "spawn_rate": 5},
+        # {"duration": 18000, "users": 500, "spawn_rate": 5}
 
         # {"duration": 19800, "users": 550, "spawn_rate": 5},
         # {"duration": 21600, "users": 600, "spawn_rate": 5},
@@ -129,7 +129,7 @@ class TimeStageShape(LoadTestShape):
         # {"duration": 27000, "users": 750, "spawn_rate": 5},
         # {"duration": 28800, "users": 800, "spawn_rate": 5}
     ]
-    time_limit = 23000
+    time_limit = 60
 
     def tick(self):
         # 调用get_run_time()方法获取压测执行的时间
@@ -148,11 +148,13 @@ class TimeStageShape(LoadTestShape):
         return None
 
 
-class GrpcTask(grpc_user.GrpcUser):
+class Dummy(grpc_user.GrpcUser):
     # interceptor = StreamStreamGrpcInterceptor
     stub_class = robotskill_pb2_grpc.RobotSkillServiceStub
 
     host = "172.16.13.134:32403"
+    wait_time = between(2, 5)
+
     channel = grpc.insecure_channel(host)
     stub = robotskill_pb2_grpc.RobotSkillServiceStub(channel)
 
