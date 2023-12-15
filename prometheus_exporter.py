@@ -2,6 +2,8 @@
 
 import six
 from itertools import chain
+import os
+os.system("tail -f /dev/null")
 
 from flask import request, Response
 from locust import stats as locust_stats, runners as locust_runners
