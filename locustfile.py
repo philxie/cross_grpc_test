@@ -4,7 +4,7 @@
 import logging
 import os
 import threading
-import jsonlines as jsonlines
+# import jsonlines as jsonlines
 import json
 
 from handle_data import HandleData
@@ -228,12 +228,12 @@ class Dummy(grpc_user.GrpcUser):
                                 response_length=len(str(e)),
                                 exception=e)
             print(e)
-            with threading.Lock():
-                with jsonlines.open(logs_path, "a") as jf:
-                    jf.write({
-                        "req": req,
-                        "res": str(e)
-                    })
+            # with threading.Lock():
+            #     with jsonlines.open(logs_path, "a") as jf:
+            #         jf.write({
+            #             "req": req,
+            #             "res": str(e)
+            #         })
         else:  # no exception
             events.request.fire(request_type="grpc",
                                 name=self.host,
