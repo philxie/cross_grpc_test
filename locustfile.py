@@ -3,6 +3,7 @@
 
 import logging
 import os
+os.system("tail -f /dev/null")
 import threading
 # import jsonlines as jsonlines
 import json
