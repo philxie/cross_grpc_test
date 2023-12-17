@@ -47,7 +47,7 @@ class TimeStageShape(LoadTestShape):
         users -- 用户数
         spawn_rate -- 每秒要启动/停止的用户数
     """
-    stages_0 = [
+    stages = [
         {"duration": 600, "users": 300, "spawn_rate": 10},
         {"duration": 1200, "users": 400, "spawn_rate": 10},
         {"duration": 1800, "users": 500, "spawn_rate": 10},
@@ -76,17 +76,26 @@ class TimeStageShape(LoadTestShape):
         {"duration": 15600, "users": 1950, "spawn_rate": 10},
         {"duration": 16200, "users": 2000, "spawn_rate": 10},
 
-        {"duration": 16800, "users": 1700, "spawn_rate": 10},
-        {"duration": 17400, "users": 1400, "spawn_rate": 10},
-        {"duration": 18000, "users": 1100, "spawn_rate": 10},
-        {"duration": 18600, "users": 800, "spawn_rate": 10},
-        {"duration": 19200, "users": 500, "spawn_rate": 10},
-        {"duration": 19800, "users": 300, "spawn_rate": 10},
-        {"duration": 20400, "users": 200, "spawn_rate": 10},
-        {"duration": 21000, "users": 100, "spawn_rate": 10},
-        {"duration": 21600, "users": 50, "spawn_rate": 10},
-        {"duration": 22200, "users": 10, "spawn_rate": 10},
-        {"duration": 22800, "users": 1, "spawn_rate": 10}
+        {"duration": 16800, "users": 1900, "spawn_rate": 10},
+        {"duration": 17400, "users": 1800, "spawn_rate": 10},
+        {"duration": 18000, "users": 1700, "spawn_rate": 10},
+        {"duration": 18600, "users": 1600, "spawn_rate": 10},
+        {"duration": 19200, "users": 1500, "spawn_rate": 10},
+        {"duration": 19800, "users": 1400, "spawn_rate": 10},
+        {"duration": 20400, "users": 1300, "spawn_rate": 10},
+        {"duration": 21000, "users": 1200, "spawn_rate": 10},
+        {"duration": 21600, "users": 1100, "spawn_rate": 10},
+        {"duration": 22200, "users": 1000, "spawn_rate": 10},
+        {"duration": 22800, "users": 900, "spawn_rate": 10},
+        {"duration": 23400, "users": 800, "spawn_rate": 10},
+        {"duration": 24000, "users": 700, "spawn_rate": 10},
+        {"duration": 24600, "users": 600, "spawn_rate": 10},
+        {"duration": 25200, "users": 500, "spawn_rate": 10},
+        {"duration": 25800, "users": 400, "spawn_rate": 10},
+        {"duration": 26400, "users": 300, "spawn_rate": 10},
+        {"duration": 27000, "users": 200, "spawn_rate": 10},
+        {"duration": 27600, "users": 100, "spawn_rate": 10},
+        {"duration": 28200, "users": 1, "spawn_rate": 10},
     ]
 
     stages_1 = [
@@ -111,7 +120,7 @@ class TimeStageShape(LoadTestShape):
         {"duration": 27000, "users": 1500, "spawn_rate": 10},
         {"duration": 28800, "users": 1600, "spawn_rate": 10}
     ]
-    stages = [
+    stages_2 = [
         {"duration": 100, "users": 100, "spawn_rate": 10}
         # {"duration": 3600, "users": 100, "spawn_rate": 5},
         # {"duration": 5400, "users": 150, "spawn_rate": 5},
@@ -130,7 +139,7 @@ class TimeStageShape(LoadTestShape):
         # {"duration": 27000, "users": 750, "spawn_rate": 5},
         # {"duration": 28800, "users": 800, "spawn_rate": 5}
     ]
-    time_limit = 600
+    time_limit = 36000
 
     def tick(self):
         # 调用get_run_time()方法获取压测执行的时间
