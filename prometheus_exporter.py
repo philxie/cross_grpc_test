@@ -3,11 +3,13 @@
 import six
 from itertools import chain
 import os
-os.system("tail -f /dev/null")
+# os.system("tail -f /dev/null")
 
 from flask import request, Response
 from locust import stats as locust_stats, runners as locust_runners
-from locust import User, task, events
+# from locust import User, task, events
+from locust import task, events, run_single_user, constant, between, LoadTestShape, tag
+import grpc_user
 from prometheus_client import Metric, REGISTRY, exposition
 
 # This locustfile adds an external web endpoint to the locust master, and makes it serve as a prometheus exporter.
@@ -112,7 +114,86 @@ def locust_init(environment, runner, **kwargs):
         REGISTRY.register(LocustCollector(environment, runner))
 
 
-class Dummy(User):
+# 基于时间段负载策略：前10s和10-20s用户数为10；20-50s用户数为50；50-80s用户数为100；80s后用户数为30
+# class TimeStageShape():
+class TimeStageShape(LoadTestShape):
+    """
+        duration -- 多少秒后进入下一个阶段
+        users -- 用户数
+        spawn_rate -- 每秒要启动/停止的用户数
+    """
+    stages = [
+        {"duration": 300, "users": 1, "spawn_rate": 1},
+        {"duration": 600, "users": 100, "spawn_rate": 10},
+        {"duration": 900, "users": 200, "spawn_rate": 10},
+        {"duration": 1200, "users": 400, "spawn_rate": 10},
+        {"duration": 1800, "users": 500, "spawn_rate": 10},
+        {"duration": 2400, "users": 600, "spawn_rate": 10},
+        {"duration": 3000, "users": 700, "spawn_rate": 10},
+        {"duration": 3600, "users": 800, "spawn_rate": 10},
+        {"duration": 4200, "users": 900, "spawn_rate": 10},
+        {"duration": 4800, "users": 1000, "spawn_rate": 10},
+        {"duration": 5400, "users": 1100, "spawn_rate": 10},
+        {"duration": 6000, "users": 1150, "spawn_rate": 10},
+        {"duration": 6600, "users": 1200, "spawn_rate": 10},
+        {"duration": 7200, "users": 1250, "spawn_rate": 10},
+        {"duration": 7800, "users": 1300, "spawn_rate": 10},
+        {"duration": 8400, "users": 1350, "spawn_rate": 10},
+        {"duration": 9000, "users": 1400, "spawn_rate": 10},
+        {"duration": 9600, "users": 1450, "spawn_rate": 10},
+        {"duration": 10200, "users": 1500, "spawn_rate": 10},
+        {"duration": 10800, "users": 1550, "spawn_rate": 10},
+        {"duration": 11400, "users": 1600, "spawn_rate": 10},
+        {"duration": 12000, "users": 1650, "spawn_rate": 10},
+        {"duration": 12600, "users": 1700, "spawn_rate": 10},
+        {"duration": 13200, "users": 1750, "spawn_rate": 10},
+        {"duration": 13800, "users": 1800, "spawn_rate": 10},
+        {"duration": 14400, "users": 1850, "spawn_rate": 10},
+        {"duration": 15000, "users": 1900, "spawn_rate": 10},
+        {"duration": 15600, "users": 1950, "spawn_rate": 10},
+        {"duration": 16200, "users": 2000, "spawn_rate": 10},
+
+        {"duration": 16800, "users": 1900, "spawn_rate": 10},
+        {"duration": 17400, "users": 1800, "spawn_rate": 10},
+        {"duration": 18000, "users": 1700, "spawn_rate": 10},
+        {"duration": 18600, "users": 1600, "spawn_rate": 10},
+        {"duration": 19200, "users": 1500, "spawn_rate": 10},
+        {"duration": 19800, "users": 1400, "spawn_rate": 10},
+        {"duration": 20400, "users": 1300, "spawn_rate": 10},
+        {"duration": 21000, "users": 1200, "spawn_rate": 10},
+        {"duration": 21600, "users": 1100, "spawn_rate": 10},
+        {"duration": 22200, "users": 1000, "spawn_rate": 10},
+        {"duration": 22800, "users": 900, "spawn_rate": 10},
+        {"duration": 23400, "users": 800, "spawn_rate": 10},
+        {"duration": 24000, "users": 700, "spawn_rate": 10},
+        {"duration": 24600, "users": 600, "spawn_rate": 10},
+        {"duration": 25200, "users": 500, "spawn_rate": 10},
+        {"duration": 25800, "users": 400, "spawn_rate": 10},
+        {"duration": 26400, "users": 300, "spawn_rate": 10},
+        {"duration": 27000, "users": 200, "spawn_rate": 10},
+        {"duration": 27600, "users": 100, "spawn_rate": 10},
+        {"duration": 28200, "users": 1, "spawn_rate": 10},
+    ]
+    time_limit = 36000
+
+    def tick(self):
+        # 调用get_run_time()方法获取压测执行的时间
+        run_time = self.get_run_time()
+
+        for stage in self.stages:
+            # 判断运行时间在不同阶段负载不同用户数量
+            if run_time < stage["duration"]:
+                tick_data = (stage["users"], stage["spawn_rate"])
+                return tick_data
+            # 设置运行总时间
+            elif self.stages[-1]["duration"] < run_time < self.time_limit:
+                tick_data = (self.stages[-1]["users"], self.stages[-1]["spawn_rate"])
+                return tick_data
+
+        return None
+    
+
+class Dummy(grpc_user.GrpcUser):
     @task(20)
     def hello(self):
         pass

@@ -11,6 +11,7 @@ jsonlines = "*"
 pandas = "*"
 locust = "*"
 grpc-interceptor = "*"
+prometheus-client = "*"
 
 [dev-packages]
 
