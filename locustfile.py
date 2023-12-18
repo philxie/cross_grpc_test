@@ -164,7 +164,7 @@ class Dummy(grpc_user.GrpcUser):
 
     # host = "172.16.13.134:32403"
     host = "crss-grpc-server.crss-plus-134:9002"
-    wait_time = between(1, 2)
+    # wait_time = between(1, 2)
 
     channel = grpc.insecure_channel(host)
     stub = robotskill_pb2_grpc.RobotSkillServiceStub(channel)
