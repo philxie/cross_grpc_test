@@ -48,7 +48,9 @@ class TimeStageShape(LoadTestShape):
         spawn_rate -- 每秒要启动/停止的用户数
     """
     stages = [
-        {"duration": 600, "users": 300, "spawn_rate": 10},
+        {"duration": 300, "users": 1, "spawn_rate": 1},
+        {"duration": 600, "users": 100, "spawn_rate": 10},
+        {"duration": 900, "users": 200, "spawn_rate": 10},
         {"duration": 1200, "users": 400, "spawn_rate": 10},
         {"duration": 1800, "users": 500, "spawn_rate": 10},
         {"duration": 2400, "users": 600, "spawn_rate": 10},
