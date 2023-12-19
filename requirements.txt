@@ -1,3 +1,4 @@
+prometheus_client
 attrs
 blinker
 Brotli
@@ -36,4 +37,4 @@ urllib3
 Werkzeug
 zope.event
 zope.interface
-prometheus_client
+
